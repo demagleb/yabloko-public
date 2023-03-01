@@ -1,6 +1,7 @@
 #pragma once
 
 extern char* const video_memory;
+extern char* const pixel_memory;
 
 enum {
     ROWS = 25,
@@ -10,6 +11,9 @@ enum {
     VGA_DATA_REGISTER = 0x3d5,
     VGA_OFFSET_LOW = 0x0f,
     VGA_OFFSET_HIGH = 0x0e,
+
+    SCREEN_WIDTH = 320,
+    SCREEN_HEIGHT = 200
 };
 
 enum colors16 {
@@ -36,3 +40,5 @@ void vga_clear_screen();
 void vga_set_char(unsigned offset, char c);
 void vga_print_string(const char* s);
 void vga_print_string_noscroll(const char* s);
+
+void vga_set_pixel(unsigned offset, char pixel);

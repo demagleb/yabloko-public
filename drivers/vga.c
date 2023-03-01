@@ -2,6 +2,7 @@
 #include "vga.h"
 
 char* const video_memory = (char*) 0xb8000;
+char* const pixel_memory = (char*) 0xa0000;
 
 static unsigned char get_color(unsigned char fg, unsigned char bg) {
     return (bg << 4) + fg;
@@ -47,4 +48,8 @@ void vga_print_string_noscroll(const char* s) {
         offset %= COLS * ROWS;
         s++;
     }
+}
+
+void vga_set_pixel(unsigned offset, char pixel) {
+    pixel_memory[offset] = pixel;
 }

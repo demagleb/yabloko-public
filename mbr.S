@@ -4,8 +4,8 @@
     .global _start
 _start:
     mov $banner, %si
-    call print_string
-
+    // call print_string
+    call switch_to_linear_vga
     call switch_to_32bit
 
     hlt
@@ -41,17 +41,23 @@ init_32bit:
 
 
 .code16
-print_string:
-    mov $0x0e, %ah  // "teletype output"
-repeat:
-    lodsb           // equivalent to mov (%si), %al; inc %si
+// print_string:
+//     mov $0x0e, %ah  // "teletype output"
+// repeat:
+//     lodsb           // equivalent to mov (%si), %al; inc %si
 
-    test %al, %al
-    je done
+//     test %al, %al
+//     je done
 
-    int $0x10       // bios interrupt
-    jmp repeat
-done:
+//     int $0x10       // bios interrupt
+//     jmp repeat
+// done:
+//     ret
+
+switch_to_linear_vga:
+    mov $0x0, %ah
+    mov $0x13, %al
+    int $0x10
     ret
 
 banner:
