@@ -42,3 +42,4 @@ void vga_print_string(const char* s);
 void vga_print_string_noscroll(const char* s);
 
 void vga_set_pixel(unsigned offset, char pixel);
+unsigned get_vga_pixel_offset(int x, int y);
