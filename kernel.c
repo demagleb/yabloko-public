@@ -17,13 +17,17 @@ void _start() {
     init_pit();
     sti(); 
     printk("YABLOKO\n");
+    
 
     int frame = 0;
     int x_shift = (SCREEN_WIDTH - width) / 2;
     int y_shift = (SCREEN_HEIGHT - height) / 2;
-    const char* data = get_frames();
+    const char* data = get_frames() + 80000;
+    // super mega hack
+    while (*data != 15) {
+        data++;
+    }
     while (1) {
-
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 unsigned offset = get_vga_pixel_offset(x_shift + i, y_shift + j);
@@ -35,7 +39,7 @@ void _start() {
             }
         }
         frame = (frame + 1) % 4;
-        msleep(100);
+        msleep(1000);
     }
 
     asm("hlt");
