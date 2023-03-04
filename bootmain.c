@@ -30,7 +30,7 @@ bootmain(void)
   elf = (Elf32_Ehdr*)0x10000;  // scratch space
 
   // Read 1st page off disk
-  readseg((uchar*)elf, 205184, 0);
+  readseg((uchar*)elf, 4096, 0);
 
   // Is this an ELF executable?
   if(elf->magic != ELF_MAGIC)

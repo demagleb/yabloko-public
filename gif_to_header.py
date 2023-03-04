@@ -38,29 +38,16 @@ def make_header():
     frames = 4
     width = 200
     height = 200
-    print("extern const char* get_frames();")
-    print(f"int n_frames = 4;")
+    print(f"int n_frames = {frames};")
     print(f"int width = {width};")
     print(f"int height = {height};")
 
-def make_asm():
-    sys.stdout = open("gif.S", "w")
-    s = []
-    width = 200
-    height = 200
-    print(".text")
-    print(".global get_frames")
-    print("get_frames:")
-    print("mov $frames, %eax")
-    print("ret")
 
-    print(".section rodata")
-    print(".global frames")
-    print("frames:")
+def make_bin():
+    sys.stdout = open("gif.bin", "wb")
     for i in range(1, 5):
         arr = parse_file(f"gif/{i}.bmp")
-        for i in arr:
-            print(f".byte {i}")
-
+        arr = bytearray(arr)
+        sys.stdout.write(arr)
 make_header()
-make_asm()
+make_bin()

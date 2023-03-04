@@ -25,7 +25,7 @@ endif
 
 OBJECTS = kernel.o console.o drivers/pit.o drivers/vga.o drivers/uart.o drivers/keyboard.o \
 	cpu/idt.o cpu/gdt.o cpu/swtch.o cpu/vectors.o lib/mem.o proc.o lib/string.o \
-	fs/fs.o gif.o
+	fs/fs.o drivers/ata.o
 
 run: image.bin
 	qemu-system-i386 -drive format=raw,file=$< -serial mon:stdio
@@ -84,8 +84,8 @@ debug-nox: image.bin
 		-ex "break _start" \
 		-ex "continue"
 
-fs.img: kernel.bin tools/mkfs user/false user/greet user/div0
-	tools/mkfs $@ $< user/false user/greet user/div0
+fs.img: kernel.bin tools/mkfs user/false user/greet user/div0 gif.bin
+	tools/mkfs $@ $< user/false user/greet user/div0 gif.bin
 
 LDFLAGS=-m elf_i386
 
@@ -116,6 +116,9 @@ mbr.raw: mbr.o bootmain.o
 
 mbr.elf: mbr.o bootmain.o
 	$(LD) -N -m elf_i386 -Ttext=0x7c00 $^ -o $@
+
+gif.bin:
+	python gif_to_header.py
 
 clean:
 	rm -f *.elf *.img *.bin *.raw *.o */*.o tools/mkfs ejudge.sh
